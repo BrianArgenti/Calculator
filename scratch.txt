@@ -1,0 +1,111 @@
+Press a number button, the number appears on the display.
+
+Press an operator button and the number on the display gets saved.
+
+The operator also gets saved.
+
+Unless the equals sign is pressed, then either nothing should happen, or an error get thrown.
+
+Press a number button the display updates with the new number, erasing the old one.
+
+Pressing another operator button causes the new number to get saved and evaluated with the previous number and operator
+
+The evaluated number gets displayed
+
+The new operator and evaluated number get saved.
+
+OR the equals button gets pressed and the expression gets evaluated.
+
+// get value1
+// dispaly value1
+// get operator
+// get value2
+// display value2
+// if next var is operator evaluate first expression and store result in value1
+// display value1
+// store next value in value2
+// if operator is = evaluate expression and display result
+
+const display = document.getElementById('display');
+let [value1, value2, oper] = [];
+
+
+const appendToDisplay = (val) => {
+    
+    if (!oper) {
+        value1 =  display.value += val;
+        console.log("Value1: ", value1);
+    } else {
+        value2 = display.value += val;
+        console.log("Value2: ", value2);
+    }   
+     
+    
+}
+
+const clearDisplay = () => {
+    display.value = '';
+    value1 = '';
+    value2 = '';
+    oper = '';
+    console.log("Cleared:", value1, oper, value2); 
+}
+
+const calculate = (operator) => {
+    console.log('V1', value1, 'OP', oper, 'V2', value2);
+
+    if (oper && value1 && value2) {
+        evaluate(oper);
+   } 
+    
+   if (oper && operator !== '=') {
+        oper = operator;        
+        value2 = '';
+   } else if (!oper) {
+        oper = operator;
+        display.value = '';
+   }
+
+   if (operator === '=' && !value2) {
+        clearDisplay();
+   }
+   
+}
+
+const evaluate = (operator) => {
+    console.log("Before eval:", value1, oper, value2);
+    switch (operator) {
+        case '+':
+            value1 = parseInt(value1) + parseInt(value2);
+            break;
+        case '-':
+            value1 = parseInt(value1) - parseInt(value2);
+            break;
+        case '*':
+            value1 = parseInt(value1) * parseInt(value2);
+            break;
+        case '/':
+
+            try {
+                if (parseInt(value2) === 0) {
+                    throw new Error("Division by zero is not allowed.");
+                    break;
+                } else {
+                    value1 = parseInt(value1) / parseInt(value2);
+            } 
+            } catch (e) {
+                console.error(e.message);
+                value1 = "Err";
+            }
+            break;
+    }
+    display.value = value1;
+    console.log("After eval:", value1, oper, value2);
+        
+}
+
+
+
+
+
+
